@@ -91,6 +91,15 @@ export const deploy = async (): Promise<ZenState> => {
   tx = await pollModule.connect(owner).setProfileNFT(profileAddress);
   await tx.wait();
 
+  console.log({
+    ownerAddress,
+    profileAddress,
+    handleAddress,
+    followAddress,
+    publicationAddress,
+    pollAddress,
+  });
+
   return {
     profile: profileNFT,
     handleModule,

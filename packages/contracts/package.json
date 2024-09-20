@@ -27,10 +27,10 @@
     "sol:format:check": "prettier --check --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "sol:format:write": "prettier --write --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "solhint": "solhint -f table 'src/**/*.sol'",
-    "test": "hardhat test"
+    "test": "hardhat test --"
   },
   "dependencies": {
-    "@fhenixprotocol/contracts": "v0.3.0-alpha.3",
+    "@fhenixprotocol/contracts": "0.2.1",
     "@nomicfoundation/hardhat-verify": "^2.0.10",
     "@openzeppelin/contracts": "^5.0.2",
     "fhenix-hardhat-docker": "^0.2.2",

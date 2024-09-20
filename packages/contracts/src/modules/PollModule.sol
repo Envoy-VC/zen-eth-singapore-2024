@@ -11,7 +11,7 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
     mapping(uint256 tokenId => uint256 nextPollId) public _nextPollIds;
     mapping(uint256 tokenId => mapping(uint256 pollId => Poll)) public _polls;
 
-    mapping(uint256 pollId => mapping(euint8 option => euint128)) internal _votes;
+    mapping(uint256 pollId => mapping(uint8 option => euint128)) internal _votes;
     mapping(uint256 tokenId => mapping(uint256 pollId => mapping(address user => bool voted))) public _voted;
 
     constructor(address initialOwner, address profileNFT) ModuleBase(initialOwner, profileNFT) {}
@@ -55,10 +55,12 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
 
         _voted[tokenId][pollId][msg.sender] = true;
 
+        uint8 dOption = FHE.decrypt(FHE.asEuint8(option));
+
         // Get votes for option
-        euint128 votes = _votes[pollId][FHE.asEuint8(option)];
+        euint128 votes = _votes[pollId][dOption];
         euint128 newVotes = FHE.add(votes, FHE.asEuint128(1));
-        _votes[pollId][FHE.asEuint8(option)] = newVotes;
+        _votes[pollId][dOption] = newVotes;
     }
 
     function _pollExists(uint256 tokenId, uint256 pollId) public view {
@@ -94,8 +96,7 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
         string[] memory results = new string[](noOfOptions);
 
         for (uint8 i = 0; i < noOfOptions; i++) {
-            euint8 option = FHE.asEuint8(i);
-            euint128 votes = _votes[pollId][option];
+            euint128 votes = _votes[pollId][i];
             results[i] = FHE.sealoutput(votes, auth.publicKey);
         }
 

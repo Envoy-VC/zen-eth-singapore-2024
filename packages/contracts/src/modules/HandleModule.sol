@@ -11,9 +11,9 @@ contract HandleModule is IHandleModule, ModuleBase {
 
     constructor(address initialOwner, address profileNFT) ModuleBase(initialOwner, profileNFT) {}
 
-    function setHandle(uint256 tokenId, Handle calldata handle) external {
+    function setHandle(address owner, uint256 tokenId, Handle calldata handle) external {
         checkHandleExists(handle.namespace, handle.localName);
-        if (_profile.ownerOf(tokenId) != msg.sender) revert NotAOwner(tokenId);
+        if (_profile.ownerOf(tokenId) != owner) revert NotAOwner(tokenId);
         _handleOwners[handle.namespace][handle.localName] = HandleOwner({owner: msg.sender, tokenId: tokenId});
         _handles[tokenId] = handle;
     }

@@ -26,7 +26,10 @@ const config: HardhatUserConfig = {
     fhenixHelium: {
       url: 'https://api.helium.fhenix.zone',
       chainId: 8008135,
-      accounts: [process.env.PRIVATE_KEY_OWNER!],
+      accounts: [
+        process.env.PRIVATE_KEY_OWNER!,
+        process.env.PRIVATE_KEY_OTHER!,
+      ],
     },
     localfhenix: {
       gas: 'auto',
@@ -35,7 +38,10 @@ const config: HardhatUserConfig = {
       timeout: 10_000,
       httpHeaders: {},
       url: 'http://127.0.0.1:42069',
-      accounts: [process.env.PRIVATE_KEY_OWNER!],
+      accounts: [
+        process.env.PRIVATE_KEY_OWNER!,
+        process.env.PRIVATE_KEY_OTHER!,
+      ],
     },
   },
   etherscan: {

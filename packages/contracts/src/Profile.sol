@@ -7,7 +7,6 @@ import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 import {FHE, euint256, inEuint256} from "@fhenixprotocol/contracts/FHE.sol";
 import {Permissioned, Permission} from "@fhenixprotocol/contracts/access/Permissioned.sol";
-import {IFHERC721} from "@fhenixprotocol/contracts/experimental/token/FHERC721/IFHERC721.sol";
 
 // Modules
 import {HandleModule} from "./modules/HandleModule.sol";
@@ -56,17 +55,21 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
         return bytes(baseURI).length > 0 ? string.concat(baseURI, tokenId.toString()) : "";
     }
 
-    function register(address to, Handle memory handle, inEuint256 calldata privateData) internal {
+    function register(address to, Handle memory handle, inEuint256 calldata privateData) external {
         uint256 tokenId = _nextTokenId;
         _nextTokenId++;
         super._mint(to, tokenId);
         _privateData[tokenId] = FHE.asEuint256(privateData);
-        _handleModule.setHandle(tokenId, handle);
+        _handleModule.setHandle(msg.sender, tokenId, handle);
     }
 
-    // Only Followers can Get Private Data
+    // Only Followers and owner can Get Private Data
     function tokenPrivateData(uint256 tokenId, Permission memory auth) external view returns (string memory) {
-        if (!_followModule.doesAlreadyFollow(tokenId)) {
+        if (ownerOf(tokenId) == msg.sender) {
+            return FHE.sealoutput(_privateData[tokenId], auth.publicKey);
+        }
+
+        if (!doesAlreadyFollow(tokenId)) {
             revert NotAFollower();
         }
         return FHE.sealoutput(_privateData[tokenId], auth.publicKey);
@@ -76,10 +79,7 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
         return _followModule.doesAlreadyFollow(tokenId);
     }
 
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, IERC165) returns (bool) {
-        return interfaceId == type(IFHERC721).interfaceId || super.supportsInterface(interfaceId);
+    function doesAlreadyFollow(uint256 tokenId, address user) public view returns (bool) {
+        return _followModule.doesAlreadyFollow(tokenId, user);
     }
 }

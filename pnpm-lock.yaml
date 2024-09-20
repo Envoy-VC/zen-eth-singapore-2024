@@ -173,8 +173,8 @@ importers:
   packages/contracts:
     dependencies:
       '@fhenixprotocol/contracts':
-        specifier: v0.3.0-alpha.3
-        version: 0.3.0-alpha.3
+        specifier: 0.2.1
+        version: 0.2.1
       '@nomicfoundation/hardhat-verify':
         specifier: ^2.0.10
         version: 2.0.11(hardhat@2.22.11(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@22.2.0)(typescript@5.5.4))(typescript@5.5.4)(utf-8-validate@5.0.10))
@@ -1414,8 +1414,8 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
-  '@fhenixprotocol/contracts@0.3.0-alpha.3':
-    resolution: {integrity: sha512-VbwpiYmkSy0Fw8MvE3PCxac6xo22lgKQB3qMAac06hr/UZRs8mW9pXcQpKpeC0AivV0h/Ltqp0viI8kOBskTrQ==}
+  '@fhenixprotocol/contracts@0.2.1':
+    resolution: {integrity: sha512-3SQRdpjeQSxZFkhsl8xfARG3bNUEbD23mUmRB2qnGNJHLs9hNQwy8bvqQoJ/3zlhcqMLoDENBKtcP63LzCBe6g==}
 
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
@@ -9754,7 +9754,7 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@fhenixprotocol/contracts@0.3.0-alpha.3':
+  '@fhenixprotocol/contracts@0.2.1':
     dependencies:
       '@openzeppelin/contracts': 5.0.2
 

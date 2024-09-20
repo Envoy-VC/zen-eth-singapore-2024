@@ -22,6 +22,7 @@ contract PublicationModule is ModuleBase, IPublicationModule, Permissioned {
         PublicationReference[] memory childPublicationReferences
     ) external returns (uint256) {
         uint256 _nextPublicationId = ++_nextPublicationIds[tokenId];
+        _nextPublicationIds[tokenId] = _nextPublicationId;
 
         // Check Ownership
         if (!(_profile.ownerOf(tokenId) == msg.sender)) {
@@ -66,7 +67,10 @@ contract PublicationModule is ModuleBase, IPublicationModule, Permissioned {
         view
         returns (string memory)
     {
-        if (!_profile.doesAlreadyFollow(tokenId)) {
+        if (_profile.ownerOf(tokenId) == msg.sender) {
+            return FHE.sealoutput(_publications[tokenId][publicationId].content, auth.publicKey);
+        }
+        if (!_profile.doesAlreadyFollow(tokenId, msg.sender)) {
             revert NotAFollower();
         }
         return FHE.sealoutput(_publications[tokenId][publicationId].content, auth.publicKey);

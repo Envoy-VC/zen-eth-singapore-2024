@@ -49,7 +49,7 @@ const config: HardhatUserConfig = {
         chainId: 8008135,
         urls: {
           apiURL: 'https://explorer.helium.fhenix.zone/api',
-          browserURL: 'https://explorer.helium.fhenix.zone//',
+          browserURL: 'https://explorer.helium.fhenix.zone/',
         },
       },
     ],

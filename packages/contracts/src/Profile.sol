@@ -13,6 +13,7 @@ import {IFHERC721} from "@fhenixprotocol/contracts/experimental/token/FHERC721/I
 import {HandleModule} from "./modules/HandleModule.sol";
 import {FollowModule} from "./modules/FollowModule.sol";
 import {PublicationModule} from "./modules/PublicationModule.sol";
+import {PollModule} from "./modules/PollModule.sol";
 
 // Interfaces
 import "./interfaces/IFollowModule.sol";
@@ -29,11 +30,21 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
     HandleModule public _handleModule;
     FollowModule public _followModule;
     PublicationModule public _publicationModule;
-    // TODO: Meet Module
-    // TODO: WorldCoin Module
-    // TODO: Confidential Poll Module
+    PollModule public _pollModule;
 
-    constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
+    constructor(
+        string memory name,
+        string memory symbol,
+        address handleModule,
+        address followModule,
+        address publicationModule,
+        address pollModule
+    ) ERC721(name, symbol) {
+        _handleModule = HandleModule(handleModule);
+        _followModule = FollowModule(followModule);
+        _publicationModule = PublicationModule(publicationModule);
+        _pollModule = PollModule(pollModule);
+    }
 
     function _baseURI() internal pure override returns (string memory) {
         return "";

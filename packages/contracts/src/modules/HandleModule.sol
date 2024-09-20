@@ -2,22 +2,14 @@
 pragma solidity ^0.8.19;
 
 import "../interfaces/IHandleModule.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ModuleBase} from "../common/ModuleBase.sol";
 
-error NotAOwner(uint256 tokenId);
-error HandleAlreadyTaken(uint256 tokenId, string namespace, string name);
-
-contract HandleModule is IHandleModule, Ownable {
+contract HandleModule is IHandleModule, ModuleBase {
     mapping(string namespace => mapping(string name => HandleOwner)) public _handleOwners;
     mapping(uint256 => Handle) public _handles;
 
-    IERC721 internal _profile;
-
-    constructor(address initialOwner, address profileNFT) Ownable(initialOwner) {
-        _profile = IERC721(profileNFT);
-    }
+    constructor(address initialOwner, address profileNFT) ModuleBase(initialOwner, profileNFT) {}
 
     function setHandle(uint256 tokenId, Handle calldata handle) external {
         checkHandleExists(handle.namespace, handle.localName);
@@ -34,10 +26,5 @@ contract HandleModule is IHandleModule, Ownable {
         if (_handleOwners[namespace][name].owner != address(0)) {
             revert HandleAlreadyTaken(_handleOwners[namespace][name].tokenId, namespace, name);
         }
-    }
-
-    // Owner Only
-    function setProfileNFT(address profileNFT) external onlyOwner {
-        _profile = IERC721(profileNFT);
     }
 }

@@ -10,7 +10,12 @@ import {Permissioned, Permission} from "@fhenixprotocol/contracts/access/Permiss
 import {IFHERC721} from "@fhenixprotocol/contracts/experimental/token/FHERC721/IFHERC721.sol";
 
 // Modules
-import {IHandleModule, Handle} from "./interfaces/IHandleModule.sol";
+import {HandleModule} from "./modules/HandleModule.sol";
+import {FollowModule} from "./modules/FollowModule.sol";
+
+// Interfaces
+import "./interfaces/IFollowModule.sol";
+import "./interfaces/IHandleModule.sol";
 
 contract ProfileNFT is Permissioned, ERC721 {
     using Strings for uint256;
@@ -19,8 +24,8 @@ contract ProfileNFT is Permissioned, ERC721 {
     uint256 public _nextTokenId;
 
     // Modules
-    IHandleModule internal _handleModule;
-    // TODO: Follow Module
+    HandleModule internal _handleModule;
+    FollowModule internal _followModule;
     // TODO: Publication Module
     // TODO: Meet Module
     // TODO: WorldCoin Module
@@ -34,7 +39,6 @@ contract ProfileNFT is Permissioned, ERC721 {
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         _requireOwned(tokenId);
-
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0 ? string.concat(baseURI, tokenId.toString()) : "";
     }
@@ -45,6 +49,14 @@ contract ProfileNFT is Permissioned, ERC721 {
         super._mint(to, tokenId);
         _privateData[tokenId] = FHE.asEuint256(privateData);
         _handleModule.setHandle(tokenId, handle);
+    }
+
+    // Only Followers can Get Private Data
+    function tokenPrivateData(uint256 tokenId, Permission memory auth) external view returns (string memory) {
+        if (!_followModule.doesAlreadyFollow(tokenId)) {
+            revert NotAFollower();
+        }
+        return FHE.sealoutput(_privateData[tokenId], auth.publicKey);
     }
 
     /**

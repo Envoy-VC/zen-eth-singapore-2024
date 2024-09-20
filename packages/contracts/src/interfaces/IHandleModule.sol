@@ -11,6 +11,9 @@ struct HandleOwner {
     uint256 tokenId;
 }
 
+error NotAOwner(uint256 tokenId);
+error HandleAlreadyTaken(uint256 tokenId, string namespace, string name);
+
 interface IHandleModule {
     function setHandle(uint256 tokenId, Handle calldata handle) external;
     function getHandle(uint256 tokenId) external view returns (Handle memory);

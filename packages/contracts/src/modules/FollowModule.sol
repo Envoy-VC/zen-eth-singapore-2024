@@ -2,11 +2,12 @@
 pragma solidity ^0.8.19;
 
 import {euint128, FHE} from "@fhenixprotocol/contracts/FHE.sol";
+import {Permissioned, Permission} from "@fhenixprotocol/contracts/access/Permissioned.sol";
 
 import {ModuleBase} from "../common/ModuleBase.sol";
 import "../interfaces/IFollowModule.sol";
 
-contract FollowModule is ModuleBase, IFollowModule {
+contract FollowModule is ModuleBase, IFollowModule, Permissioned {
     mapping(uint256 tokenId => mapping(address user => bool follows)) public _follows;
     mapping(uint256 tokenId => euint128 followers) public _totalFollowers;
 
@@ -30,5 +31,12 @@ contract FollowModule is ModuleBase, IFollowModule {
 
     function doesAlreadyFollow(uint256 tokenId) public view returns (bool) {
         return _follows[tokenId][msg.sender];
+    }
+
+    function getFollowers(uint256 tokenId, Permission memory auth) external view returns (string memory) {
+        if (!doesAlreadyFollow(tokenId)) {
+            revert NotAFollower();
+        }
+        return FHE.sealoutput(_totalFollowers[tokenId], auth.publicKey);
     }
 }

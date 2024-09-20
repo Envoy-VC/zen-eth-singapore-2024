@@ -12,21 +12,23 @@ import {IFHERC721} from "@fhenixprotocol/contracts/experimental/token/FHERC721/I
 // Modules
 import {HandleModule} from "./modules/HandleModule.sol";
 import {FollowModule} from "./modules/FollowModule.sol";
+import {PublicationModule} from "./modules/PublicationModule.sol";
 
 // Interfaces
 import "./interfaces/IFollowModule.sol";
 import "./interfaces/IHandleModule.sol";
+import "./interfaces/IProfileNFT.sol";
 
-contract ProfileNFT is Permissioned, ERC721 {
+contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
     using Strings for uint256;
 
     mapping(uint256 tokenId => euint256) private _privateData;
     uint256 public _nextTokenId;
 
     // Modules
-    HandleModule internal _handleModule;
-    FollowModule internal _followModule;
-    // TODO: Publication Module
+    HandleModule public _handleModule;
+    FollowModule public _followModule;
+    PublicationModule public _publicationModule;
     // TODO: Meet Module
     // TODO: WorldCoin Module
     // TODO: Confidential Poll Module
@@ -59,10 +61,14 @@ contract ProfileNFT is Permissioned, ERC721 {
         return FHE.sealoutput(_privateData[tokenId], auth.publicKey);
     }
 
+    function doesAlreadyFollow(uint256 tokenId) public view returns (bool) {
+        return _followModule.doesAlreadyFollow(tokenId);
+    }
+
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, IERC165) returns (bool) {
         return interfaceId == type(IFHERC721).interfaceId || super.supportsInterface(interfaceId);
     }
 }

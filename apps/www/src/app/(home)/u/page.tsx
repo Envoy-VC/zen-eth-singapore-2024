@@ -46,7 +46,6 @@ const Profiles = () => {
 
 const ProfileCard = ({
   tokenId,
-  owner,
   handleLocalName,
   handleNamespace,
 }: {
@@ -56,7 +55,7 @@ const ProfileCard = ({
   handleLocalName: string;
 }) => {
   return (
-    <div className='flex w-full max-w-[14rem] flex-col items-center justify-center rounded-3xl bg-neutral-100 py-8 gap-4'>
+    <div className='flex w-full max-w-[14rem] flex-col items-center justify-center gap-4 rounded-3xl bg-neutral-100 py-8'>
       <Avatar className='h-full max-h-[7rem] w-full max-w-[7rem] rounded-xl'>
         <Avvvatars
           size={112}

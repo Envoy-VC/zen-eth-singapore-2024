@@ -63,7 +63,7 @@ export const UserFeed = (props: UserFeedProps) => {
         Feed
       </Button>
       <div className='sm:order-l bg-background-secondary border-b border-t sm:rounded-xl sm:border-r'>
-        <div className='flex flex-col'>
+        <div className='flex flex-col gap-4'>
           {polls?.map((poll) => {
             return <PollCard key={poll.pollId} {...poll} />;
           })}

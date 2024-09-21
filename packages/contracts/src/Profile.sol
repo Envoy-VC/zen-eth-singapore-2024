@@ -13,6 +13,7 @@ import {HandleModule} from "./modules/HandleModule.sol";
 import {FollowModule} from "./modules/FollowModule.sol";
 import {PublicationModule} from "./modules/PublicationModule.sol";
 import {PollModule} from "./modules/PollModule.sol";
+import {AuctionModule} from "./modules/AuctionModule.sol";
 
 // Interfaces
 import "./interfaces/IFollowModule.sol";
@@ -32,6 +33,7 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
     FollowModule public _followModule;
     PublicationModule public _publicationModule;
     PollModule public _pollModule;
+    AuctionModule public _auctionModule;
 
     constructor(
         string memory name,
@@ -39,12 +41,14 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
         address handleModule,
         address followModule,
         address publicationModule,
-        address pollModule
+        address pollModule,
+        address auctionModule
     ) ERC721(name, symbol) {
         _handleModule = HandleModule(handleModule);
         _followModule = FollowModule(followModule);
         _publicationModule = PublicationModule(publicationModule);
         _pollModule = PollModule(pollModule);
+        _auctionModule = AuctionModule(auctionModule);
     }
 
     function _baseURI() internal pure override returns (string memory) {

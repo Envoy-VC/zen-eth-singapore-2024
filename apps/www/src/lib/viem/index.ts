@@ -9,6 +9,7 @@ import { walletConnect } from 'wagmi/connectors';
 import { env } from '~/env';
 
 import {
+  AUCTION_MODULE_ABI,
   FOLLOW_MODULE_ABI,
   POLL_MODULE_ABI,
   PROFILE_ABI,
@@ -56,4 +57,9 @@ export const followModuleConfig = {
 export const pollModuleConfig = {
   abi: POLL_MODULE_ABI,
   address: env.NEXT_PUBLIC_POLL_MODULE_ADDRESS,
+};
+
+export const auctionModuleConfig = {
+  abi: AUCTION_MODULE_ABI,
+  address: env.NEXT_PUBLIC_AUCTION_MODULE_ADDRESS,
 };

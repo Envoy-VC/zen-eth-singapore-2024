@@ -6,6 +6,7 @@ import type {
   FollowModule,
   PublicationModule,
   PollModule,
+  AuctionModule,
 } from 'typechain-types';
 import type { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 
@@ -17,6 +18,7 @@ export interface ZenState {
   followModule: FollowModule;
   publicationModule: PublicationModule;
   pollModule: PollModule;
+  auctionModule: AuctionModule;
   owner: HardhatEthersSigner;
   otherAccount: HardhatEthersSigner;
 }
@@ -67,6 +69,14 @@ export const deploy = async (): Promise<ZenState> => {
   await pollModule.waitForDeployment();
   const pollAddress = await pollModule.getAddress();
 
+  const AuctionModule = await hre.ethers.getContractFactory('AuctionModule');
+  const auctionModule = await AuctionModule.connect(owner).deploy(
+    ownerAddress,
+    ZeroAddress
+  );
+  await auctionModule.waitForDeployment();
+  const auctionAddress = await auctionModule.getAddress();
+
   // Deploy Profile NFT
   const ProfileNFT = await hre.ethers.getContractFactory('ProfileNFT');
   const profileNFT = await ProfileNFT.connect(owner).deploy(
@@ -75,7 +85,8 @@ export const deploy = async (): Promise<ZenState> => {
     handleAddress,
     followAddress,
     publicationAddress,
-    pollAddress
+    pollAddress,
+    auctionAddress
   );
   await profileNFT.waitForDeployment();
   const profileAddress = await profileNFT.getAddress();
@@ -90,6 +101,8 @@ export const deploy = async (): Promise<ZenState> => {
   await tx.wait();
   tx = await pollModule.connect(owner).setProfileNFT(profileAddress);
   await tx.wait();
+  tx = await auctionModule.connect(owner).setProfileNFT(profileAddress);
+  await tx.wait();
 
   console.log({
     ownerAddress,
@@ -98,6 +111,7 @@ export const deploy = async (): Promise<ZenState> => {
     followAddress,
     publicationAddress,
     pollAddress,
+    auctionAddress,
   });
 
   return {
@@ -106,6 +120,7 @@ export const deploy = async (): Promise<ZenState> => {
     followModule,
     publicationModule,
     pollModule,
+    auctionModule,
     owner,
     otherAccount,
   };

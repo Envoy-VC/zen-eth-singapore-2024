@@ -13,6 +13,7 @@ export const env = createEnv({
     NEXT_PUBLIC_FOLLOW_MODULE_ADDRESS: z.string().min(1),
     NEXT_PUBLIC_PUBLICATION_MODULE_ADDRESS: z.string().min(1),
     NEXT_PUBLIC_POLL_MODULE_ADDRESS: z.string().min(1),
+    NEXT_PUBLIC_AUCTION_MODULE_ADDRESS: z.string().min(1),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_WALLETCONNECT_ID: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
@@ -26,6 +27,8 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_PUBLICATION_MODULE_ADDRESS,
     NEXT_PUBLIC_POLL_MODULE_ADDRESS:
       process.env.NEXT_PUBLIC_POLL_MODULE_ADDRESS,
+    NEXT_PUBLIC_AUCTION_MODULE_ADDRESS:
+      process.env.NEXT_PUBLIC_AUCTION_MODULE_ADDRESS,
   },
   skipValidation: Boolean(process.env.SKIP_ENV_VALIDATION),
   emptyStringAsUndefined: true,

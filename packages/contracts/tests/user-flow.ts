@@ -78,7 +78,7 @@ describe('UserFlow', () => {
 
     const followers = await followModule
       .connect(otherAccount)
-      .getFollowers(1, fheOther.permit);
+      .getFollowers(1, fheOther.permit, otherAddress);
 
     console.log(
       fheOther.instance.unseal(await profile.getAddress(), followers)

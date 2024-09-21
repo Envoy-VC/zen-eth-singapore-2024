@@ -28,7 +28,7 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
         _polls[tokenId][_nextPollId] =
             Poll({id: _nextPollId, content: content, deadline: deadline, noOfOptions: noOfOptions});
 
-        emit PollCreated(tokenId, _nextPollId, _polls[tokenId][_nextPollId]);
+        emit PollCreated(tokenId, _nextPollId, content, deadline, noOfOptions);
     }
 
     function endPoll(uint256 tokenId, uint256 pollId) external {

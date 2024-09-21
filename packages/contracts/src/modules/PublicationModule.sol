@@ -51,7 +51,7 @@ contract PublicationModule is ModuleBase, IPublicationModule, Permissioned {
             childTokenIds: childTokenIds
         });
 
-        emit PublicationCreated(tokenId, _nextPublicationId, _publications[tokenId][_nextPublicationId]);
+        emit PublicationCreated(tokenId, _nextPublicationId, _publications[tokenId][_nextPublicationId].content);
 
         return _nextPublicationId;
     }

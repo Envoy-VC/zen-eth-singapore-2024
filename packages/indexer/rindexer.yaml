@@ -1,18 +1,53 @@
-name: indexer
-project_type: no-code
+name: "indexer"
+project_type: "no-code"
 networks:
-  - name: fhenixLocal
+  - name: "fhenixLocal"
     chain_id: 42069
-    rpc: http://127.0.0.1:42069
+    rpc: "http://127.0.0.1:42069"
 storage:
   postgres:
     enabled: true
 contracts:
-  - name: ProfileNFT
+  - name: "ProfileNFT"
     details:
-      - network: fhenixLocal
-        address: 0x2b2E84f4AC0D155844dF0cD0F60B14d9f960292C
-        start_block: '0'
-    abi: ./abis/Profile.abi.json
+      - network: "fhenixLocal"
+        address: "0x638b115F272307fD1289E697fa35b6A481a2805e"
+        start_block: "0"
+    abi: "./abis/Profile.abi.json"
     include_events:
-      - ProfileCreated
+      - "ProfileCreated"
+  - name: "HandleModule"
+    details:
+      - network: "fhenixLocal"
+        address: "0xb52b9770F8fe938BC040E4Ad19598e7a792308BB"
+        start_block: "0"
+    abi: "./abis/HandleModule.abi.json"
+    include_events:
+      - "HandleSet"
+  - name: "FollowModule"
+    details:
+      - network: "fhenixLocal"
+        address: "0x5bcfdf03eC2528F8dE24034749060b4Fe0dCCbB0"
+        start_block: "0"
+    abi: "./abis/FollowModule.abi.json"
+    include_events:
+      - "Followed"
+      - "Unfollowed"
+  - name: "PublicationModule"
+    details:
+      - network: "fhenixLocal"
+        address: "0xAc2a115aE189Ba5680D4e7e8Dc039c0352aca648"
+        start_block: "0"
+    abi: "./abis/PublicationModule.abi.json"
+    include_events:
+      - "PublicationCreated"
+  - name: "PollModule"
+    details:
+      - network: "fhenixLocal"
+        address: "0x0C8D9076820b563ABE69697D6F6E178D61D96Bd8"
+        start_block: "0"
+    abi: "./abis/PollModule.abi.json"
+    include_events:
+      - "PollCreated"
+      - "PollEnded"
+      - "Voted"

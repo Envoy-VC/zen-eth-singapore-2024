@@ -7,8 +7,11 @@ import { ZeroAddress } from 'ethers';
 import * as dotenv from 'dotenv';
 import { readFileSync, writeFileSync } from 'node:fs';
 
+import yaml from 'json-to-pretty-yaml';
 const path = '../../apps/www/.env';
+const path2 = '../../packages/indexer/.env';
 dotenv.config({ path });
+dotenv.config({ path: path2 });
 
 const func: DeployFunction = async function () {
   const { ethers } = hre;
@@ -37,11 +40,21 @@ const func: DeployFunction = async function () {
     skipIfAlreadyDeployed: false,
   });
 
+  writeFileSync(
+    '../../packages/indexer/abis/HandleModule.abi.json',
+    JSON.stringify(handleModule.abi)
+  );
+
   const followModule = await deploy('FollowModule', {
     from: owner.address,
     args: [ownerAddress, ZeroAddress],
     skipIfAlreadyDeployed: false,
   });
+
+  writeFileSync(
+    '../../packages/indexer/abis/FollowModule.abi.json',
+    JSON.stringify(followModule.abi)
+  );
 
   const publicationModule = await deploy('PublicationModule', {
     from: owner.address,
@@ -49,11 +62,21 @@ const func: DeployFunction = async function () {
     skipIfAlreadyDeployed: false,
   });
 
+  writeFileSync(
+    '../../packages/indexer/abis/PublicationModule.abi.json',
+    JSON.stringify(publicationModule.abi)
+  );
+
   const pollModule = await deploy('PollModule', {
     from: owner.address,
     args: [ownerAddress, ZeroAddress],
     skipIfAlreadyDeployed: false,
   });
+
+  writeFileSync(
+    '../../packages/indexer/abis/PollModule.abi.json',
+    JSON.stringify(pollModule.abi)
+  );
 
   const profileNFT = await deploy('ProfileNFT', {
     from: owner.address,
@@ -67,6 +90,11 @@ const func: DeployFunction = async function () {
     ],
     skipIfAlreadyDeployed: false,
   });
+
+  writeFileSync(
+    '../../packages/indexer/abis/Profile.abi.json',
+    JSON.stringify(profileNFT.abi)
+  );
 
   // update Profile in all modules
   let contract;
@@ -107,6 +135,90 @@ const func: DeployFunction = async function () {
   });
 
   writeFileSync(path, updated, { encoding: 'utf8' });
+
+  const jsonData = {
+    name: 'indexer',
+    project_type: 'no-code',
+    networks: [
+      {
+        name: 'fhenixLocal',
+        chain_id: 42069,
+        rpc: 'http://127.0.0.1:42069',
+      },
+    ],
+    storage: {
+      postgres: {
+        enabled: true,
+      },
+    },
+    contracts: [
+      {
+        name: 'ProfileNFT',
+        details: [
+          {
+            network: 'fhenixLocal',
+            address: profileNFT.address,
+            start_block: '0',
+          },
+        ],
+        abi: './abis/Profile.abi.json',
+        include_events: ['ProfileCreated'],
+      },
+      {
+        name: 'HandleModule',
+        details: [
+          {
+            network: 'fhenixLocal',
+            address: handleModule.address,
+            start_block: '0',
+          },
+        ],
+        abi: './abis/HandleModule.abi.json',
+        include_events: ['HandleSet'],
+      },
+      {
+        name: 'FollowModule',
+        details: [
+          {
+            network: 'fhenixLocal',
+            address: followModule.address,
+            start_block: '0',
+          },
+        ],
+        abi: './abis/FollowModule.abi.json',
+        include_events: ['Followed', 'Unfollowed'],
+      },
+      {
+        name: 'PublicationModule',
+        details: [
+          {
+            network: 'fhenixLocal',
+            address: publicationModule.address,
+            start_block: '0',
+          },
+        ],
+        abi: './abis/PublicationModule.abi.json',
+        include_events: ['PublicationCreated'],
+      },
+      {
+        name: 'PollModule',
+        details: [
+          {
+            network: 'fhenixLocal',
+            address: pollModule.address,
+            start_block: '0',
+          },
+        ],
+        abi: './abis/PollModule.abi.json',
+        include_events: ['PollCreated', 'PollEnded', 'Voted'],
+      },
+    ],
+  };
+
+  const yamlString = yaml.stringify(jsonData) as string;
+  writeFileSync('../../packages/indexer/rindexer.yaml', yamlString, {
+    encoding: 'utf8',
+  });
 };
 
 export default func;

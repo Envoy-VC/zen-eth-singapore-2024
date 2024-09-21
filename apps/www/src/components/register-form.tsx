@@ -9,7 +9,7 @@ import { profileContractConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { z } from 'zod';
 
 import { Button } from './ui/button';
@@ -36,6 +36,10 @@ type RegisterType = z.infer<typeof registerSchema>;
 export const RegisterForm = () => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
+  useReadContract({
+    abi: profileContractConfig.abi,
+    address: profileContractConfig.address as `0x${string}`,
+  });
 
   const form = useForm<RegisterType>({
     resolver: zodResolver(registerSchema),

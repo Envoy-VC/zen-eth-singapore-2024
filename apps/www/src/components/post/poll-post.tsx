@@ -3,7 +3,10 @@
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
+import { pollModuleConfig } from '~/lib/viem';
+
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useWriteContract } from 'wagmi';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
@@ -33,6 +36,8 @@ const postSchema = z.object({
 type PostType = z.infer<typeof postSchema>;
 
 export const PollPost = () => {
+  const { writeContractAsync } = useWriteContract();
+
   const form = useForm<PostType>({
     resolver: zodResolver(postSchema),
     defaultValues: {
@@ -45,7 +50,21 @@ export const PollPost = () => {
     name: 'options',
   });
 
-  const onSubmit = (values: PostType) => {
+  const onSubmit = async (values: PostType) => {
+    const totalOptions = values.options.length;
+    // TODO: Get content hash
+    const cid = '';
+    // TODO: Get token id
+    const tokenId = BigInt(1);
+    // Deadline 1 Day
+    const deadline = BigInt(Math.round(Date.now() / 1000) + 24 * 60 * 60);
+
+    await writeContractAsync({
+      abi: pollModuleConfig.abi,
+      address: pollModuleConfig.address as `0x${string}`,
+      functionName: 'createPoll',
+      args: [tokenId, cid, deadline, totalOptions],
+    });
     console.log(values);
   };
 

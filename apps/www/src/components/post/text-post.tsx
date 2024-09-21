@@ -3,9 +3,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { encryptPrivateData } from '~/lib/helpers';
 import { cn } from '~/lib/utils';
+import { publicationModuleConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useWriteContract } from 'wagmi';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
@@ -38,6 +41,8 @@ const postSchema = z.object({
 type PostType = z.infer<typeof postSchema>;
 
 export const TextPost = () => {
+  const { writeContractAsync } = useWriteContract();
+
   const form = useForm<PostType>({
     resolver: zodResolver(postSchema),
     defaultValues: {
@@ -45,7 +50,26 @@ export const TextPost = () => {
     },
   });
 
-  const onSubmit = (values: PostType) => {
+  const onSubmit = async (values: PostType) => {
+    // TODO: Get content hash
+    const cid = '';
+    const data = await encryptPrivateData(cid);
+
+    // TODO: Get token id
+    const tokenId = BigInt(1);
+
+    await writeContractAsync({
+      abi: publicationModuleConfig.abi,
+      address: publicationModuleConfig.address as `0x${string}`,
+      functionName: 'createPublication',
+      args: [
+        tokenId,
+        0,
+        data as { data: `0x${string}` },
+        { publicationId: BigInt(0), tokenId: BigInt(0) },
+        [],
+      ],
+    });
     console.log(values);
   };
 

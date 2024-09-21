@@ -44,6 +44,7 @@ export const PollCard = (props: PollCardProps) => {
         question: string;
         options: { option: string }[];
       };
+      console.log(res);
       return res;
     },
   });
@@ -120,59 +121,66 @@ export const PollCard = (props: PollCardProps) => {
 
     setResults(percentages);
   };
-  return (
-    <div className='flex flex-col gap-5 rounded-2xl bg-neutral-200 px-3 py-5'>
-      <div className='font-neutral-400 font-medium text-2xl'>
-        {poll?.question}
-      </div>
-      <div className='flex flex-col gap-1'>
-        {poll?.options.map((option, index) => {
-          return (
-            <div
-              key={option.option}
-              className='flex flex-row items-center gap-2'
-            >
-              <Button
-                className='flex w-full flex-row items-center justify-between !rounded-2xl bg-white px-4 !text-lg text-neutral-700'
-                onClick={() => setSelectedOption(index)}
+  if (poll)
+    return (
+      <div className='flex flex-col gap-5 rounded-2xl bg-neutral-200 px-3 py-5'>
+        <div className='font-neutral-400 font-medium text-2xl'>
+          {poll.question}
+        </div>
+        <div className='flex flex-col gap-1'>
+          {(poll.options ?? []).map((option, index) => {
+            return (
+              <div
+                key={option.option}
+                className='flex flex-row items-center gap-2'
               >
-                <div className='flex flex-row items-center gap-3'>
-                  <div
-                    className={cn(
-                      'h-4 w-4 rounded-full bg-neutral-300',
-                      selectedOption === index
-                        ? 'bg-blue-500'
-                        : 'bg-neutral-300'
-                    )}
-                  />
-                  {option.option}
-                </div>
-                <div className='font-semibold text-sm'>
-                  {results[index] ? `${results[index].toFixed(2)}%` : ''}
-                </div>
+                <Button
+                  className='flex w-full flex-row items-center justify-between !rounded-2xl bg-white px-4 !text-lg text-neutral-700'
+                  onClick={() => setSelectedOption(index)}
+                >
+                  <div className='flex flex-row items-center gap-3'>
+                    <div
+                      className={cn(
+                        'h-4 w-4 rounded-full bg-neutral-300',
+                        selectedOption === index
+                          ? 'bg-blue-500'
+                          : 'bg-neutral-300'
+                      )}
+                    />
+                    {option.option}
+                  </div>
+                  <div className='font-semibold text-sm'>
+                    {results[index] ? `${results[index].toFixed(2)}%` : ''}
+                  </div>
+                </Button>
+              </div>
+            );
+          })}
+        </div>
+        <div className='flex flex-row justify-between gap-4 px-4'>
+          <div className='flex flex-row items-center gap-4'>
+            {owner?.toLowerCase() === address?.toLowerCase() && (
+              <Button
+                className='!text-lg'
+                onClick={async () => await endPoll()}
+              >
+                End Poll
               </Button>
-            </div>
-          );
-        })}
-      </div>
-      <div className='flex flex-row justify-between gap-4 px-4'>
-        <div className='flex flex-row items-center gap-4'>
-          {owner?.toLowerCase() === address?.toLowerCase() && (
-            <Button className='!text-lg' onClick={async () => await endPoll()}>
-              End Poll
+            )}
+            <Button
+              className='!text-lg'
+              onClick={async () => await getResults()}
+            >
+              View Results
             </Button>
-          )}
-          <Button className='!text-lg' onClick={async () => await getResults()}>
-            View Results
+          </div>
+          <Button
+            className='!text-lg'
+            onClick={async () => await voteFOrPoll(selectedOption)}
+          >
+            Vote
           </Button>
         </div>
-        <Button
-          className='!text-lg'
-          onClick={async () => await voteFOrPoll(selectedOption)}
-        >
-          Vote
-        </Button>
       </div>
-    </div>
-  );
+    );
 };

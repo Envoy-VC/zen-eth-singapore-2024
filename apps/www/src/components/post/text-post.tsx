@@ -69,7 +69,7 @@ export const TextPost = (props: TextPostProps) => {
       content: values.content,
       fileCid,
     };
-    const cid = await uploadJSON(data);
+    await uploadJSON(data);
     // todo
     const eData = await encryptPrivateData('124');
 

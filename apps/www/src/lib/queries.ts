@@ -96,3 +96,18 @@ export const POLLS_BY_TOKEN_ID_QUERY = (tokenId: string) => `
     }
   }
 `;
+
+export const AUCTIONS_BY_TOKEN_ID_QUERY = (tokenId: string) => `
+  query ExampleQuery {
+    allAuctionCreateds(condition: { tokenId: "${tokenId}" }) {
+      nodes {
+        auctionId
+        content
+        endTime
+        startPrice
+        startTime
+        tokenId
+      }
+    }
+  }
+`;

@@ -24,5 +24,18 @@ export const encryptPrivateData = async (data: string) => {
 export const encryptVoteOption = async (option: number) => {
   const client = getClient();
   const res = await client.encrypt_uint8(option);
+
+  return { data: `0x${Buffer.from(res.data).toString('hex')}` };
+};
+
+export const encryptBidAmount = async (amount: string) => {
+  const client = getClient();
+  const res = await client.encrypt_uint128(amount);
+  return { data: `0x${Buffer.from(res.data).toString('hex')}` };
+};
+
+export const encryptAddress = async (address: string) => {
+  const client = getClient();
+  const res = await client.encrypt_address(address);
   return { data: `0x${Buffer.from(res.data).toString('hex')}` };
 };

@@ -2381,6 +2381,12 @@ export const AUCTION_MODULE_ABI = [
       },
       {
         indexed: false,
+        internalType: 'string',
+        name: 'content',
+        type: 'string',
+      },
+      {
+        indexed: false,
         internalType: 'uint256',
         name: 'startPrice',
         type: 'uint256',
@@ -2457,6 +2463,11 @@ export const AUCTION_MODULE_ABI = [
         type: 'address',
       },
       {
+        internalType: 'string',
+        name: 'content',
+        type: 'string',
+      },
+      {
         internalType: 'uint256',
         name: 'startPrice',
         type: 'uint256',
@@ -2500,6 +2511,11 @@ export const AUCTION_MODULE_ABI = [
         internalType: 'uint256',
         name: 'tokenId',
         type: 'uint256',
+      },
+      {
+        internalType: 'string',
+        name: 'content',
+        type: 'string',
       },
       {
         internalType: 'uint256',
@@ -2577,6 +2593,24 @@ export const AUCTION_MODULE_ABI = [
         name: 'auctionId',
         type: 'uint256',
       },
+    ],
+    name: 'endAuction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'auctionId',
+        type: 'uint256',
+      },
       {
         components: [
           {
@@ -2637,14 +2671,28 @@ export const AUCTION_MODULE_ABI = [
         type: 'uint256',
       },
       {
-        internalType: 'euint128',
+        components: [
+          {
+            internalType: 'bytes',
+            name: 'data',
+            type: 'bytes',
+          },
+        ],
+        internalType: 'struct inEuint128',
         name: 'amount',
-        type: 'uint256',
+        type: 'tuple',
       },
       {
-        internalType: 'eaddress',
+        components: [
+          {
+            internalType: 'bytes',
+            name: 'data',
+            type: 'bytes',
+          },
+        ],
+        internalType: 'struct inEaddress',
         name: 'sender',
-        type: 'uint256',
+        type: 'tuple',
       },
     ],
     name: 'placeBid',

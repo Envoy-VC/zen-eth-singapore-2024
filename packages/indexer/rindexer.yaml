@@ -11,7 +11,7 @@ contracts:
   - name: "ProfileNFT"
     details:
       - network: "fhenixLocal"
-        address: "0x2041EAe20dE71e0E869dfCf9604503005b715218"
+        address: "0x76ec3b8a662B1874788E947a614E2323a2F3E48d"
         start_block: "0"
     abi: "./abis/Profile.abi.json"
     include_events:
@@ -19,7 +19,7 @@ contracts:
   - name: "HandleModule"
     details:
       - network: "fhenixLocal"
-        address: "0x2Ce7AF9AB5959A9956B11e9A952f1CB1eD795CD1"
+        address: "0x2041EAe20dE71e0E869dfCf9604503005b715218"
         start_block: "0"
     abi: "./abis/HandleModule.abi.json"
     include_events:
@@ -27,7 +27,7 @@ contracts:
   - name: "FollowModule"
     details:
       - network: "fhenixLocal"
-        address: "0x5F66e156e9f1F59ccf314F4B9e1247d84946DFeC"
+        address: "0xE52d1965dc19CDFcDac81BaA2Aeeb7FB4BBe890d"
         start_block: "0"
     abi: "./abis/FollowModule.abi.json"
     include_events:
@@ -36,7 +36,7 @@ contracts:
   - name: "PublicationModule"
     details:
       - network: "fhenixLocal"
-        address: "0xb20B790AB54116143a06F24B88dCc0Efe4420D29"
+        address: "0x2aA4449C4c37D53517c3f982532E71A24470E6Fe"
         start_block: "0"
     abi: "./abis/PublicationModule.abi.json"
     include_events:
@@ -44,10 +44,18 @@ contracts:
   - name: "PollModule"
     details:
       - network: "fhenixLocal"
-        address: "0x945B29fFBcAFA4185A097aCE8f6189daB461d532"
+        address: "0x7A7E5A02f419A697Ef870574087D2BA46b51DA30"
         start_block: "0"
     abi: "./abis/PollModule.abi.json"
     include_events:
       - "PollCreated"
       - "PollEnded"
       - "Voted"
+  - name: "AuctionModule"
+    details:
+      - network: "fhenixLocal"
+        address: "0xfe6cd7940952BAA308FDB99c14e1A5233F1d3625"
+        start_block: "0"
+    abi: "./abis/AuctionModule.abi.json"
+    include_events:
+      - "AuctionCreated"

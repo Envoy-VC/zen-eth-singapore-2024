@@ -1,11 +1,15 @@
 import { fetcher } from '~/lib/graphql';
-import { POLLS_BY_TOKEN_ID_QUERY } from '~/lib/queries';
+import {
+  AUCTIONS_BY_TOKEN_ID_QUERY,
+  POLLS_BY_TOKEN_ID_QUERY,
+} from '~/lib/queries';
 import { profileContractConfig } from '~/lib/viem';
 
 import { useQuery } from '@tanstack/react-query';
 import { useAccount, useReadContract } from 'wagmi';
 import { PostBox } from '~/components';
 
+import { AuctionCard } from '~/components/cards';
 import { PollCard } from '~/components/cards/poll';
 import { Button } from '~/components/ui/button';
 
@@ -41,6 +45,30 @@ export const UserFeed = (props: UserFeedProps) => {
     },
   });
 
+  const { data: auctions } = useQuery({
+    queryKey: [props.tokenId, 'auctions'],
+    queryFn: async () => {
+      const res = (await fetcher(
+        AUCTIONS_BY_TOKEN_ID_QUERY(props.tokenId)
+      )) as {
+        data: {
+          allAuctionCreateds: {
+            nodes: {
+              auctionId: string;
+              content: string;
+              endTime: number;
+              startPrice: string;
+              startTime: string;
+              tokenId: string;
+            }[];
+          };
+        };
+      };
+
+      return res.data.allAuctionCreateds.nodes;
+    },
+  });
+
   const { data: ownerOf } = useReadContract({
     abi: profileContractConfig.abi,
     address: profileContractConfig.address as `0x${string}`,
@@ -66,6 +94,9 @@ export const UserFeed = (props: UserFeedProps) => {
         <div className='flex flex-col gap-4'>
           {polls?.map((poll) => {
             return <PollCard key={poll.pollId} {...poll} />;
+          })}
+          {auctions?.map((auction) => {
+            return <AuctionCard key={auction.auctionId} {...auction} />;
           })}
         </div>
       </div>

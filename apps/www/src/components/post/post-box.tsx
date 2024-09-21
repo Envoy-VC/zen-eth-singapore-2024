@@ -9,7 +9,8 @@ import { Input } from '../ui/input';
 import { PollPost } from './poll-post';
 import { TextPost } from './text-post';
 
-import { ImageIcon, SmileIcon, VoteIcon } from 'lucide-react';
+import { ImageIcon, ReceiptIcon, SmileIcon, VoteIcon } from 'lucide-react';
+import { AuctionPost } from './auction-post';
 
 interface PostBoxProps {
   handleLocalName: string;
@@ -19,7 +20,9 @@ interface PostBoxProps {
 }
 
 export const PostBox = (props: PostBoxProps) => {
-  const [postType, setPostType] = useState<'text' | 'poll' | null>(null);
+  const [postType, setPostType] = useState<'text' | 'poll' | 'auction' | null>(
+    null
+  );
 
   return (
     <div>
@@ -79,6 +82,23 @@ export const PostBox = (props: PostBoxProps) => {
               </Button>
             </DialogTrigger>
             <PollPost {...props} />
+          </Dialog>
+          <Dialog
+            open={postType === 'auction'}
+            onOpenChange={(open) => {
+              if (open) {
+                setPostType('auction');
+              } else {
+                setPostType(null);
+              }
+            }}
+          >
+            <DialogTrigger>
+              <Button className='h-9 w-9 p-0 text-neutral-500' variant='ghost'>
+                <ReceiptIcon size={20} />
+              </Button>
+            </DialogTrigger>
+            <AuctionPost {...props} />
           </Dialog>
         </div>
       </div>

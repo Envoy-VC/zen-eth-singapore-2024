@@ -8,7 +8,12 @@ import {
 import { walletConnect } from 'wagmi/connectors';
 import { env } from '~/env';
 
-import { FOLLOW_MODULE_ABI, PROFILE_ABI, PUBLICATION_MODULE_ABI } from './abi';
+import {
+  FOLLOW_MODULE_ABI,
+  POLL_MODULE_ABI,
+  PROFILE_ABI,
+  PUBLICATION_MODULE_ABI,
+} from './abi';
 import { fhenixHelium, localFhenix } from './chains';
 
 export const projectId = env.NEXT_PUBLIC_WALLETCONNECT_ID;
@@ -46,4 +51,9 @@ export const publicationModuleConfig = {
 export const followModuleConfig = {
   abi: FOLLOW_MODULE_ABI,
   address: env.NEXT_PUBLIC_FOLLOW_MODULE_ADDRESS,
+};
+
+export const pollModuleConfig = {
+  abi: POLL_MODULE_ABI,
+  address: env.NEXT_PUBLIC_POLL_MODULE_ADDRESS,
 };

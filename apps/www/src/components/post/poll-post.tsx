@@ -3,6 +3,7 @@
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
+import { uploadJSON } from '~/lib/storage';
 import { pollModuleConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,6 +29,13 @@ import { Input } from '../ui/input';
 
 import { SendHorizonalIcon, Trash2Icon } from 'lucide-react';
 
+interface PollPostProps {
+  handleLocalName: string;
+  handleNamespace: string;
+  owner: string;
+  tokenId: string;
+}
+
 const postSchema = z.object({
   question: z.string(),
   options: z.array(z.object({ option: z.string() })).min(2),
@@ -35,7 +43,7 @@ const postSchema = z.object({
 
 type PostType = z.infer<typeof postSchema>;
 
-export const PollPost = () => {
+export const PollPost = (props: PollPostProps) => {
   const { writeContractAsync } = useWriteContract();
 
   const form = useForm<PostType>({
@@ -52,10 +60,8 @@ export const PollPost = () => {
 
   const onSubmit = async (values: PostType) => {
     const totalOptions = values.options.length;
-    // TODO: Get content hash
-    const cid = '';
-    // TODO: Get token id
-    const tokenId = BigInt(1);
+    const cid = await uploadJSON(values);
+    const tokenId = BigInt(props.tokenId);
     // Deadline 1 Day
     const deadline = BigInt(Math.round(Date.now() / 1000) + 24 * 60 * 60);
 
@@ -66,6 +72,7 @@ export const PollPost = () => {
       args: [tokenId, cid, deadline, totalOptions],
     });
     console.log(values);
+    form.reset();
   };
 
   return (

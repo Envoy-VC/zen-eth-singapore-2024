@@ -20,3 +20,9 @@ export const encryptPrivateData = async (data: string) => {
   const res = await client.encrypt_uint256(hex);
   return { data: `0x${Buffer.from(res.data).toString('hex')}` };
 };
+
+export const encryptVoteOption = async (option: number) => {
+  const client = getClient();
+  const res = await client.encrypt_uint8(option);
+  return { data: `0x${Buffer.from(res.data).toString('hex')}` };
+};

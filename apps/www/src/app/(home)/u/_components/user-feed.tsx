@@ -1,16 +1,47 @@
+import { fetcher } from '~/lib/graphql';
+import { POLLS_BY_TOKEN_ID_QUERY } from '~/lib/queries';
+
+import { useQuery } from '@tanstack/react-query';
 import { PostBox } from '~/components';
 
-import { PostCard } from '~/components/cards';
+import { PollCard } from '~/components/cards/poll';
 import { Button } from '~/components/ui/button';
 
 import { Rss } from 'lucide-react';
 
-export const UserFeed = () => {
+interface UserFeedProps {
+  handleLocalName: string;
+  handleNamespace: string;
+  owner: string;
+  tokenId: string;
+}
+
+export const UserFeed = (props: UserFeedProps) => {
+  const { data: polls } = useQuery({
+    queryKey: [props.tokenId, 'polls'],
+    queryFn: async () => {
+      const res = (await fetcher(POLLS_BY_TOKEN_ID_QUERY(props.tokenId))) as {
+        data: {
+          allPollCreateds: {
+            nodes: {
+              content: string;
+              deadline: string;
+              noOfOptions: number;
+              pollId: string;
+              tokenId: string;
+            }[];
+          };
+        };
+      };
+
+      return res.data.allPollCreateds.nodes;
+    },
+  });
   return (
     <div className='flex flex-col gap-2 sm:py-12'>
-      <PostBox />
+      <PostBox {...props} />
       <Button
-        className='mx-3 flex h-8 w-fit flex-row items-center gap-2 text-sm font-medium sm:mx-0'
+        className='mx-3 flex h-8 w-fit flex-row items-center gap-2 font-medium text-sm sm:mx-0'
         variant='outline'
       >
         <Rss className='mb-1' size={16} strokeWidth={2.5} />
@@ -18,8 +49,8 @@ export const UserFeed = () => {
       </Button>
       <div className='sm:order-l bg-background-secondary border-b border-t sm:rounded-xl sm:border-r'>
         <div className='flex flex-col'>
-          {Array.from({ length: 10 }).map((_, index) => {
-            return <PostCard key={index} />;
+          {polls?.map((poll) => {
+            return <PollCard key={poll.pollId} {...poll} />;
           })}
         </div>
       </div>

@@ -68,3 +68,31 @@ export const PUBLICATIONS_BY_TOKEN_ID_QUERY = (tokenId: string) => `
     }
   }
 `;
+
+export const ALL_POLLS_QUERY = `
+  query ExampleQuery {
+    allPollCreateds {
+      nodes {
+        content
+        deadline
+        noOfOptions
+        pollId
+        tokenId
+      }
+    }
+  }
+`;
+
+export const POLLS_BY_TOKEN_ID_QUERY = (tokenId: string) => `
+  query ExampleQuery {
+    allPollCreateds(condition: { tokenId: "${tokenId}" }) {
+      nodes {
+        content
+        deadline
+        noOfOptions
+        pollId
+        tokenId
+      }
+    }
+  }
+`;

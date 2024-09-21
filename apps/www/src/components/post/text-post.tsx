@@ -4,6 +4,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { encryptPrivateData } from '~/lib/helpers';
+import { uploadFile, uploadJSON } from '~/lib/storage';
 import { cn } from '~/lib/utils';
 import { publicationModuleConfig } from '~/lib/viem';
 
@@ -40,7 +41,14 @@ const postSchema = z.object({
 
 type PostType = z.infer<typeof postSchema>;
 
-export const TextPost = () => {
+interface TextPostProps {
+  handleLocalName: string;
+  handleNamespace: string;
+  owner: string;
+  tokenId: string;
+}
+
+export const TextPost = (props: TextPostProps) => {
   const { writeContractAsync } = useWriteContract();
 
   const form = useForm<PostType>({
@@ -51,12 +59,21 @@ export const TextPost = () => {
   });
 
   const onSubmit = async (values: PostType) => {
-    // TODO: Get content hash
-    const cid = '';
-    const data = await encryptPrivateData(cid);
+    let fileCid = '';
+    if (values.file?.[0]) {
+      const file = values.file[0];
+      const abf = await file.arrayBuffer();
+      fileCid = await uploadFile(abf);
+    }
+    const data = {
+      content: values.content,
+      fileCid,
+    };
+    const cid = await uploadJSON(data);
+    // todo
+    const eData = await encryptPrivateData('124');
 
-    // TODO: Get token id
-    const tokenId = BigInt(1);
+    const tokenId = BigInt(props.tokenId);
 
     await writeContractAsync({
       abi: publicationModuleConfig.abi,
@@ -65,7 +82,7 @@ export const TextPost = () => {
       args: [
         tokenId,
         0,
-        data as { data: `0x${string}` },
+        eData as { data: `0x${string}` },
         { publicationId: BigInt(0), tokenId: BigInt(0) },
         [],
       ],
@@ -104,6 +121,7 @@ export const TextPost = () => {
                     <FormItem className='h-10'>
                       <Button
                         className='h-9 w-9 p-0 text-neutral-500'
+                        type='button'
                         variant='ghost'
                         onClick={() => {
                           document.getElementById('text-post-file')?.click();

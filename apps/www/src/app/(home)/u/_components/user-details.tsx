@@ -176,7 +176,16 @@ export const UserDetails = ({
       </div>
       <div className='flex flex-row items-center gap-6 text-sm sm:text-base'>
         {unsealed ? (
-          <pre>{JSON.stringify(unsealed, null, 2)}</pre>
+          <div className='flex flex-col'>
+            {Object.entries(JSON.parse(unsealed) as object).map(([k, v]) => {
+              return (
+                <div key={k} className='flex flex-row gap-2'>
+                  <div className='font-medium'>{k}: </div>
+                  <div className='font-regular'>{String(v)}</div>
+                </div>
+              );
+            })}
+          </div>
         ) : (
           <Button
             onClick={async () => {

@@ -11,7 +11,14 @@ import { TextPost } from './text-post';
 
 import { ImageIcon, SmileIcon, VoteIcon } from 'lucide-react';
 
-export const PostBox = () => {
+interface PostBoxProps {
+  handleLocalName: string;
+  handleNamespace: string;
+  owner: string;
+  tokenId: string;
+}
+
+export const PostBox = (props: PostBoxProps) => {
   const [postType, setPostType] = useState<'text' | 'poll' | null>(null);
 
   return (
@@ -38,7 +45,7 @@ export const PostBox = () => {
                 <ImageIcon size={20} />
               </Button>
             </DialogTrigger>
-            <TextPost />
+            <TextPost {...props} />
           </Dialog>
           <Dialog
             open={postType === 'text'}
@@ -71,7 +78,7 @@ export const PostBox = () => {
                 <VoteIcon size={20} />
               </Button>
             </DialogTrigger>
-            <PollPost />
+            <PollPost {...props} />
           </Dialog>
         </div>
       </div>

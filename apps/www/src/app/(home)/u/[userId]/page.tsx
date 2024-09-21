@@ -49,7 +49,7 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
             <UserDetails {...data} />
           </div>
           <div className='w-full basis-2/3'>
-            <UserFeed />
+            <UserFeed {...data} />
           </div>
         </div>
       </div>

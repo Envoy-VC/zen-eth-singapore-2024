@@ -47,7 +47,7 @@ describe('UserFlow', () => {
 
     const pdata = await profile
       .connect(otherAccount)
-      .tokenPrivateData(BigInt(0), fheOther.permit);
+      .tokenPrivateData(BigInt(0), fheOther.permit, otherAddress);
 
     console.log('Private Data:', pdata);
 

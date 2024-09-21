@@ -49,9 +49,12 @@ const NavItems = [
     title: 'Home',
     href: '/',
   },
-
   {
     title: 'Discover',
     href: '/discover',
+  },
+  {
+    title: 'Claim Handle',
+    href: '/claim',
   },
 ];

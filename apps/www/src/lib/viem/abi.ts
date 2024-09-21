@@ -340,6 +340,25 @@ export const PROFILE_ABI = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: '_privateData',
+    outputs: [
+      {
+        internalType: 'euint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: '_publicationModule',
     outputs: [
@@ -716,6 +735,11 @@ export const PROFILE_ABI = [
         internalType: 'struct Permission',
         name: 'auth',
         type: 'tuple',
+      },
+      {
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
       },
     ],
     name: 'tokenPrivateData',

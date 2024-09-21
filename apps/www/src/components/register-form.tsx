@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
@@ -9,7 +11,7 @@ import { profileContractConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import { z } from 'zod';
 
 import { Button } from './ui/button';
@@ -36,10 +38,8 @@ type RegisterType = z.infer<typeof registerSchema>;
 export const RegisterForm = () => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
-  useReadContract({
-    abi: profileContractConfig.abi,
-    address: profileContractConfig.address as `0x${string}`,
-  });
+
+  const router = useRouter();
 
   const form = useForm<RegisterType>({
     resolver: zodResolver(registerSchema),
@@ -72,6 +72,11 @@ export const RegisterForm = () => {
           encrypted as { data: `0x${string}` },
         ],
       });
+
+      toast.success('Profile registered successfully');
+
+      form.reset();
+      router.push('/');
     } catch (error) {
       toast.error(errorHandler(error));
     }

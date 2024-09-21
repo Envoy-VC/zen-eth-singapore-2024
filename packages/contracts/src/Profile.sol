@@ -24,7 +24,7 @@ event ProfileCreated(address indexed owner, uint256 tokenId, Handle handle);
 contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
     using Strings for uint256;
 
-    mapping(uint256 tokenId => euint256) private _privateData;
+    mapping(uint256 tokenId => euint256) public _privateData;
     uint256 public _nextTokenId;
 
     // Modules
@@ -67,8 +67,12 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
     }
 
     // Only Followers and owner can Get Private Data
-    function tokenPrivateData(uint256 tokenId, Permission memory auth) external view returns (string memory) {
-        if (ownerOf(tokenId) == msg.sender) {
+    function tokenPrivateData(uint256 tokenId, Permission memory auth, address sender)
+        external
+        view
+        returns (string memory)
+    {
+        if (ownerOf(tokenId) == sender) {
             return FHE.sealoutput(_privateData[tokenId], auth.publicKey);
         }
 

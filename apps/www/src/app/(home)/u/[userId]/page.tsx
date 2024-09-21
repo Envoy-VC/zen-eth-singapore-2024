@@ -30,7 +30,7 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
       };
       return res.data.allProfileCreateds.nodes[0] ?? null;
     },
-    // refetchInterval: 1500,
+    refetchInterval: 1500,
   });
 
   if (data)

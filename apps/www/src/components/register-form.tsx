@@ -7,9 +7,10 @@ import { useFieldArray, useForm } from 'react-hook-form';
 
 import { encryptPrivateData } from '~/lib/helpers';
 import { cn, errorHandler } from '~/lib/utils';
-import { profileContractConfig } from '~/lib/viem';
+import { profileContractConfig, wagmiConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { waitForTransactionReceipt } from '@wagmi/core';
 import { toast } from 'sonner';
 import { useAccount, useWriteContract } from 'wagmi';
 import { z } from 'zod';
@@ -62,7 +63,7 @@ export const RegisterForm = () => {
 
       console.log(encrypted);
 
-      await writeContractAsync({
+      const hash = await writeContractAsync({
         abi: profileContractConfig.abi,
         address: profileContractConfig.address as `0x${string}`,
         functionName: 'register',
@@ -72,6 +73,8 @@ export const RegisterForm = () => {
           encrypted as { data: `0x${string}` },
         ],
       });
+
+      await waitForTransactionReceipt(wagmiConfig, { hash });
 
       toast.success('Profile registered successfully');
 

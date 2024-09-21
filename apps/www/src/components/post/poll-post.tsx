@@ -4,9 +4,11 @@ import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { uploadJSON } from '~/lib/storage';
-import { pollModuleConfig } from '~/lib/viem';
+import { pollModuleConfig, wagmiConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { waitForTransactionReceipt } from '@wagmi/core';
+import { toast } from 'sonner';
 import { useWriteContract } from 'wagmi';
 import { z } from 'zod';
 
@@ -65,13 +67,14 @@ export const PollPost = (props: PollPostProps) => {
     // Deadline 1 Day
     const deadline = BigInt(Math.round(Date.now() / 1000) + 24 * 60 * 60);
 
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       abi: pollModuleConfig.abi,
       address: pollModuleConfig.address as `0x${string}`,
       functionName: 'createPoll',
       args: [tokenId, cid, deadline, totalOptions],
     });
-    console.log(values);
+    await waitForTransactionReceipt(wagmiConfig, { hash });
+    toast.success('Poll Created Successfully');
     form.reset();
   };
 

@@ -11,7 +11,8 @@ import {
 } from '~/lib/viem';
 
 import { useQuery } from '@tanstack/react-query';
-import { readContract } from '@wagmi/core';
+import { readContract, waitForTransactionReceipt } from '@wagmi/core';
+import { toast } from 'sonner';
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 
 import { Button } from '../ui/button';
@@ -32,6 +33,9 @@ export const PollCard = (props: PollCardProps) => {
     address: profileContractConfig.address as `0x${string}`,
     functionName: 'ownerOf',
     args: [BigInt(props.tokenId)],
+    query: {
+      refetchInterval: 1500,
+    },
   });
   const { data: poll } = useQuery({
     queryKey: [props.pollId, props.tokenId],
@@ -48,7 +52,7 @@ export const PollCard = (props: PollCardProps) => {
 
   const voteFOrPoll = async (option: number) => {
     const eOption = await encryptVoteOption(option);
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       abi: pollModuleConfig.abi,
       address: pollModuleConfig.address as `0x${string}`,
       functionName: 'voteForPoll',
@@ -60,17 +64,23 @@ export const PollCard = (props: PollCardProps) => {
         },
       ],
     });
+
+    await waitForTransactionReceipt(wagmiConfig, { hash });
+    toast.success('Voted Successfully');
   };
 
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
   const endPoll = async () => {
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       abi: pollModuleConfig.abi,
       address: pollModuleConfig.address as `0x${string}`,
       functionName: 'endPoll',
       args: [BigInt(props.tokenId), BigInt(props.pollId)],
     });
+
+    await waitForTransactionReceipt(wagmiConfig, { hash });
+    toast.success('Poll Ended Successfully');
   };
   const [results, setResults] = useState<number[]>([]);
 

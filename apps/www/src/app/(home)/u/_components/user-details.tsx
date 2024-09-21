@@ -44,7 +44,7 @@ export const UserDetails = ({
     functionName: '_totalFollowers',
     args: [BigInt(tokenId)],
     query: {
-      // refetchInterval: 1500,
+      refetchInterval: 1500,
     },
   });
 
@@ -87,7 +87,7 @@ export const UserDetails = ({
     functionName: '_privateData',
     args: [BigInt(tokenId)],
     query: {
-      // refetchInterval: 1500,
+      refetchInterval: 1500,
     },
   });
 
@@ -97,7 +97,7 @@ export const UserDetails = ({
     functionName: '_follows',
     args: [BigInt(tokenId), address ?? '0x0'],
     query: {
-      // refetchInterval: 1500,
+      refetchInterval: 1500,
     },
   });
 
@@ -115,6 +115,7 @@ export const UserDetails = ({
         args: [BigInt(tokenId), address],
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });
+      toast.success('Followed Successfully');
     } catch (error) {
       toast.error(errorHandler(error));
     }
@@ -131,6 +132,7 @@ export const UserDetails = ({
         args: [BigInt(tokenId), address],
       });
       await waitForTransactionReceipt(wagmiConfig, { hash });
+      toast.success('Unfollowed Successfully');
     } catch (error) {
       toast.error(errorHandler(error));
     }

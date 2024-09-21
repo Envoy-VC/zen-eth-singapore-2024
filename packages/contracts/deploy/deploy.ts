@@ -16,6 +16,9 @@ const func: DeployFunction = async function () {
   const { deploy } = hre.deployments;
   const [owner, otherAccount] = await ethers.getSigners();
 
+  await hre.fhenixjs.getFunds('0x2b7a8f9c4c38352304dd47082910546d867c3a3e');
+  await hre.fhenixjs.getFunds('0x2b7a8f9c4c38352304dd47082910546d867c3a3e');
+
   if (!owner || !otherAccount) {
     throw new Error('No owner available');
   }

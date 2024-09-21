@@ -20,6 +20,11 @@ const config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
+        regular: ['Zen Regular', 'sans-serif'],
+        medium: ['Zen Medium', 'sans-serif'],
+        semibold: ['Zen Semibold', 'sans-serif'],
+        bold: ['Zen Bold', 'sans-serif'],
+        yoruka: ['Yoruka', 'sans-serif'],
       },
       colors: {
         border: 'var(--border)',

@@ -25,8 +25,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang='en'>
       <body className={`font-sans ${GeistSans.variable}`}>
-        <Web3Provider initialState={initialState}>{children}</Web3Provider>
-        <Toaster />
+        <Web3Provider initialState={initialState}>
+          {children}
+          <Toaster />
+        </Web3Provider>
       </body>
     </html>
   );

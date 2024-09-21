@@ -5,10 +5,8 @@ import React from 'react';
 import BackgroundImage from 'public/Zen Background.png';
 
 import { Logo } from '~/components/icons';
+import { RegisterForm } from '~/components/register-form';
 import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
-
-import { ArrowRightIcon } from 'lucide-react';
 
 const ClaimPage = () => {
   return (
@@ -24,19 +22,10 @@ const ClaimPage = () => {
         </div>
         <div className='mx-auto my-24 w-full max-w-lg py-24'>
           <div className='flex flex-col gap-4'>
-            <div className='text-3xl font-semibold'>Mint your Zen Handle</div>
-            <div className='flex flex-row rounded-2xl border'>
-              <Input
-                className='m-[2px] h-9 rounded-2xl border-none ring-0'
-                placeholder='Search your Zen Handle'
-              />
-              <Button
-                className='h-10 w-20 rounded-l-2xl rounded-r-2xl px-0'
-                variant='ghost'
-              >
-                <ArrowRightIcon className='text-neutral-500' size={20} />
-              </Button>
+            <div className='mx-auto my-3 font-semibold text-3xl'>
+              Mint your Zen Handle
             </div>
+            <RegisterForm />
           </div>
         </div>
       </div>

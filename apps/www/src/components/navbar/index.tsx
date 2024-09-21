@@ -7,6 +7,7 @@ import { Input } from '~/components/ui/input';
 
 import { Logo } from '../icons';
 import { Button } from '../ui/button';
+import { ConnectButton } from './connect-button';
 
 import { Search } from 'lucide-react';
 
@@ -28,7 +29,7 @@ export const Navbar = () => {
             <Button
               key={item.title}
               asChild
-              className='h-9 !text-sm font-medium'
+              className='h-9 font-medium !text-sm'
               variant={pathname === item.href ? 'secondary' : 'ghost'}
             >
               <Link href={item.href}>{item.title}</Link>
@@ -36,15 +37,7 @@ export const Navbar = () => {
           ))}
         </div>
         <div className='flex flex-row items-center gap-3'>
-          <Button
-            className='h-9 rounded-full border border-black text-base font-bold dark:border-white'
-            variant='ghost'
-          >
-            Signup
-          </Button>
-          <Button className='flex h-9 items-center gap-2 rounded-full text-base'>
-            Login
-          </Button>
+          <ConnectButton />
         </div>
       </div>
     </div>

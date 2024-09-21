@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
+
 export const ConnectButton = () => {
-  return <w3m-button />;
+  return <DynamicWidget />;
 };

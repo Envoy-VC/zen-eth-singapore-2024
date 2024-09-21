@@ -7,9 +7,11 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_WALLETCONNECT_ID: z.string().min(1),
+    NEXT_PUBLIC_DYNAMIC_ENV_ID: z.string().min(1),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_WALLETCONNECT_ID: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
+    NEXT_PUBLIC_DYNAMIC_ENV_ID: process.env.NEXT_PUBLIC_DYNAMIC_ENV_ID,
   },
   skipValidation: Boolean(process.env.SKIP_ENV_VALIDATION),
   emptyStringAsUndefined: true,

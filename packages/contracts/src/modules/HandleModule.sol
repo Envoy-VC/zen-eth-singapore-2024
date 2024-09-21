@@ -16,6 +16,7 @@ contract HandleModule is IHandleModule, ModuleBase {
         if (_profile.ownerOf(tokenId) != owner) revert NotAOwner(tokenId);
         _handleOwners[handle.namespace][handle.localName] = HandleOwner({owner: msg.sender, tokenId: tokenId});
         _handles[tokenId] = handle;
+        emit HandleSet(tokenId, handle);
     }
 
     function getHandle(uint256 tokenId) external view returns (Handle memory) {

@@ -19,6 +19,8 @@ import "./interfaces/IFollowModule.sol";
 import "./interfaces/IHandleModule.sol";
 import "./interfaces/IProfileNFT.sol";
 
+event ProfileCreated(address indexed owner, uint256 tokenId, Handle handle);
+
 contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
     using Strings for uint256;
 
@@ -61,6 +63,7 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
         super._mint(to, tokenId);
         _privateData[tokenId] = FHE.asEuint256(privateData);
         _handleModule.setHandle(msg.sender, tokenId, handle);
+        emit ProfileCreated(to, tokenId, handle);
     }
 
     // Only Followers and owner can Get Private Data

@@ -27,6 +27,8 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
 
         _polls[tokenId][_nextPollId] =
             Poll({id: _nextPollId, content: content, deadline: deadline, noOfOptions: noOfOptions});
+
+        emit PollCreated(tokenId, _nextPollId, _polls[tokenId][_nextPollId]);
     }
 
     function endPoll(uint256 tokenId, uint256 pollId) external {
@@ -42,6 +44,8 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
         Poll storage poll = _polls[tokenId][pollId];
         // set deadline to now
         poll.deadline = block.timestamp;
+
+        emit PollEnded(tokenId, pollId);
     }
 
     function voteForPoll(uint256 tokenId, uint256 pollId, inEuint8 calldata option) external {
@@ -61,6 +65,8 @@ contract PollModule is ModuleBase, IPollModule, Permissioned {
         euint128 votes = _votes[pollId][dOption];
         euint128 newVotes = FHE.add(votes, FHE.asEuint128(1));
         _votes[pollId][dOption] = newVotes;
+
+        emit Voted(tokenId, pollId, msg.sender);
     }
 
     function _pollExists(uint256 tokenId, uint256 pollId) public view {

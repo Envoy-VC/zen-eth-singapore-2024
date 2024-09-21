@@ -16,6 +16,13 @@ struct Poll {
     uint8 noOfOptions;
 }
 
+event PollCreated(uint256 indexed tokenId, uint256 indexed pollId, Poll poll);
+
+event PollEnded(uint256 indexed tokenId, uint256 indexed pollId);
+
+event Voted(uint256 indexed tokenId, uint256 indexed pollId, address indexed user);
+
+
 interface IPollModule {
     function createPoll(uint256 tokenId, string memory content, uint256 deadline, uint8 noOfOptions) external;
     function endPoll(uint256 tokenId, uint256 pollId) external;

@@ -26,6 +26,8 @@ struct PublicationReference {
 
 error InvalidParentPublicationId(uint256 tokenId, uint256 publicationId);
 
+event PublicationCreated(uint256 indexed tokenId, uint256 indexed publicationId, Publication publication);
+
 interface IPublicationModule {
     function createPublication(
         uint256 tokenId,

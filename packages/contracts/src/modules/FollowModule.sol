@@ -19,6 +19,7 @@ contract FollowModule is ModuleBase, IFollowModule, Permissioned {
         }
         _follows[tokenId][user] = true;
         _totalFollowers[tokenId] = FHE.add(_totalFollowers[tokenId], FHE.asEuint128(1));
+        emit Followed(tokenId, user);
     }
 
     function unfollow(uint256 tokenId, address user) external {
@@ -28,6 +29,7 @@ contract FollowModule is ModuleBase, IFollowModule, Permissioned {
 
         _follows[tokenId][user] = false;
         _totalFollowers[tokenId] = FHE.sub(_totalFollowers[tokenId], FHE.asEuint128(1));
+        emit Unfollowed(tokenId, user);
     }
 
     function doesAlreadyFollow(uint256 tokenId) public view returns (bool) {

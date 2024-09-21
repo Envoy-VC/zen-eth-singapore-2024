@@ -1,0 +1,18 @@
+name: indexer
+project_type: no-code
+networks:
+  - name: fhenixLocal
+    chain_id: 42069
+    rpc: http://127.0.0.1:42069
+storage:
+  postgres:
+    enabled: true
+contracts:
+  - name: ProfileNFT
+    details:
+      - network: fhenixLocal
+        address: 0x2b2E84f4AC0D155844dF0cD0F60B14d9f960292C
+        start_block: '0'
+    abi: ./abis/Profile.abi.json
+    include_events:
+      - ProfileCreated

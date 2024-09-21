@@ -23,7 +23,7 @@
     "local-fhenix:start": "hardhat localfhenix:start",
     "local-fhenix:stop": "hardhat localfhenix:stop",
     "node": "hardhat node",
-    "send-request": "hardhat task:send-request",
+    "register": "hardhat task:register",
     "sol:format:check": "prettier --check --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "sol:format:write": "prettier --write --plugin=prettier-plugin-solidity 'contracts/**/*.sol'",
     "solhint": "solhint -f table 'src/**/*.sol'",

@@ -1,0 +1,17 @@
+query profileCreatedQuery($nodeId: ID!) {
+    profileCreated(nodeId: $nodeId) {
+        nodeId
+        rindexerId
+        contractAddress
+        owner
+        tokenId
+        handleLocalName
+        handleNamespace
+        txHash
+        blockNumber
+        blockHash
+        network
+        txIndex
+        logIndex
+    }
+}

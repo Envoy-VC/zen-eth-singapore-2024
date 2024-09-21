@@ -1,0 +1,35 @@
+query allProfileCreatedsQuery(
+    $after: Cursor,
+    $first: Int = 50,
+    $condition: ProfileCreatedCondition = {},
+    $orderBy: [ProfileCreatedsOrderBy!] = BLOCK_NUMBER_DESC
+) {
+    allProfileCreateds(
+        first: $first,
+        after: $after,
+        condition: $condition,
+        orderBy: $orderBy
+    ) {
+        nodes {
+            nodeId
+            rindexerId
+            contractAddress
+            owner
+            tokenId
+            handleLocalName
+            handleNamespace
+            txHash
+            blockNumber
+            blockHash
+            network
+            txIndex
+            logIndex
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+        }
+    }
+}

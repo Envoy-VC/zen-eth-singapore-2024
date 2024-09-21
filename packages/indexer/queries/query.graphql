@@ -1,0 +1,10 @@
+query queryQuery($nodeId: ID!) {
+    query(nodeId: $nodeId) {
+        query
+        nodeId
+        node
+        allProfileCreateds
+        profileCreatedByRindexerId
+        profileCreated
+    }
+}

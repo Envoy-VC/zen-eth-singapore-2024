@@ -11,7 +11,7 @@ import '@nomiclabs/hardhat-solhint';
 import '@nomicfoundation/hardhat-verify';
 import 'solidity-docgen';
 import 'hardhat-deploy';
-// import "./tasks";
+import './tasks';
 
 import * as dotenv from 'dotenv';
 

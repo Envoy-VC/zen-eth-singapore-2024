@@ -34,4 +34,6 @@ export const localFhenix = defineChain({
       url: 'https://explorer.helium.fhenix.zone',
     },
   },
+  iconUrls: [],
+  blockExplorerUrls: [],
 });

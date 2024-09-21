@@ -17,7 +17,7 @@ const func: DeployFunction = async function () {
   const [owner, otherAccount] = await ethers.getSigners();
 
   await hre.fhenixjs.getFunds('0x2b7a8f9c4c38352304dd47082910546d867c3a3e');
-  await hre.fhenixjs.getFunds('0x2b7a8f9c4c38352304dd47082910546d867c3a3e');
+  await hre.fhenixjs.getFunds('0xe269688F24e1C7487f649fC3dCD99A4Bf15bDaA1');
 
   if (!owner || !otherAccount) {
     throw new Error('No owner available');
@@ -90,13 +90,23 @@ const func: DeployFunction = async function () {
 
   console.log('ProfileNFT Address: ', profileNFT.address);
 
-  //   const parsed = dotenv.parse(data);
-  //   let updated = '';
-  //   Object.entries({ ...parsed, ...config }).forEach(([k, v]) => {
-  //     updated += `${k}="${v}"\n`;
-  //   });
+  const config = {
+    NEXT_PUBLIC_PROFILE_ADDRESS: profileNFT.address,
+    NEXT_PUBLIC_HANDLE_MODULE_ADDRESS: handleModule.address,
+    NEXT_PUBLIC_FOLLOW_MODULE_ADDRESS: followModule.address,
+    NEXT_PUBLIC_PUBLICATION_MODULE_ADDRESS: publicationModule.address,
+    NEXT_PUBLIC_POLL_MODULE_ADDRESS: pollModule.address,
+  };
 
-  //   writeFileSync(path, updated, { encoding: 'utf8' });
+  const data = readFileSync(path, { encoding: 'utf8' });
+
+  const parsed = dotenv.parse(data);
+  let updated = '';
+  Object.entries({ ...parsed, ...config }).forEach(([k, v]) => {
+    updated += `${k}="${v}"\n`;
+  });
+
+  writeFileSync(path, updated, { encoding: 'utf8' });
 };
 
 export default func;

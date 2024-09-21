@@ -3,9 +3,13 @@
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { cn } from '~/lib/utils';
+import { encryptPrivateData } from '~/lib/helpers';
+import { cn, errorHandler } from '~/lib/utils';
+import { profileContractConfig } from '~/lib/viem';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { useAccount, useWriteContract } from 'wagmi';
 import { z } from 'zod';
 
 import { Button } from './ui/button';
@@ -30,6 +34,9 @@ const registerSchema = z.object({
 type RegisterType = z.infer<typeof registerSchema>;
 
 export const RegisterForm = () => {
+  const { address } = useAccount();
+  const { writeContractAsync } = useWriteContract();
+
   const form = useForm<RegisterType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -37,8 +44,33 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: RegisterType) => {
-    console.log(values);
+  const onSubmit = async (values: RegisterType) => {
+    try {
+      if (!address) {
+        throw new Error('No address found');
+      }
+      console.log(values);
+      const data: Record<string, string> = {};
+      values.privateFields.forEach(({ name, value }) => {
+        data[name] = value;
+      });
+      const encrypted = await encryptPrivateData(JSON.stringify(data));
+
+      console.log(encrypted);
+
+      await writeContractAsync({
+        abi: profileContractConfig.abi,
+        address: profileContractConfig.address as `0x${string}`,
+        functionName: 'register',
+        args: [
+          address,
+          { namespace: 'zen', localName: values.name },
+          encrypted as { data: `0x${string}` },
+        ],
+      });
+    } catch (error) {
+      toast.error(errorHandler(error));
+    }
   };
 
   const fileRef = form.register('profilePicture');

@@ -771,4 +771,4 @@ export const PROFILE_ABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-];
+] as const;

@@ -5,23 +5,35 @@ import {
   createStorage,
   http,
 } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
+import { walletConnect } from 'wagmi/connectors';
 import { env } from '~/env';
 
+import { PROFILE_ABI } from './abi';
 import { fhenixHelium, localFhenix } from './chains';
 
 export const projectId = env.NEXT_PUBLIC_WALLETCONNECT_ID;
 
+const metadata = {
+  name: 'Web3 Turbo Starter',
+  description: 'Web3 starter kit with turborepo, wagmi, and Next.js',
+  url: 'http://localhost:3000',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
+
 export const wagmiConfig: Config = createConfig({
-  chains: [fhenixHelium, localFhenix, mainnet],
+  chains: [localFhenix, fhenixHelium],
   ssr: true,
   storage: createStorage({
     storage: cookieStorage,
   }),
-  multiInjectedProviderDiscovery: false,
+  connectors: [walletConnect({ projectId, metadata, showQrModal: false })],
   transports: {
-    [fhenixHelium.id]: http(),
     [localFhenix.id]: http(),
-    [mainnet.id]: http(),
+    [fhenixHelium.id]: http(),
   },
 });
+
+export const profileContractConfig = {
+  abi: PROFILE_ABI,
+  address: env.NEXT_PUBLIC_PROFILE_ADDRESS,
+};

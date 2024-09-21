@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 
 import React from 'react';
@@ -6,7 +8,6 @@ import BackgroundImage from 'public/Zen Background.png';
 
 import { Logo } from '~/components/icons';
 import { RegisterForm } from '~/components/register-form';
-import { Button } from '~/components/ui/button';
 
 const ClaimPage = () => {
   return (
@@ -16,7 +17,7 @@ const ClaimPage = () => {
           <div className='mx-auto flex w-full max-w-screen-xl items-center justify-between gap-2 px-8 py-3'>
             <div className='flex w-full flex-row items-center justify-between gap-4'>
               <Logo height={38} width={38} />
-              <Button className='!rounded-3xl'>Connect Wallet</Button>
+              <w3m-button />
             </div>
           </div>
         </div>

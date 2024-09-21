@@ -772,3 +772,853 @@ export const PROFILE_ABI = [
     type: 'function',
   },
 ] as const;
+
+export const PUBLICATION_MODULE_ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'initialOwner',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'profileNFT',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'publicationId',
+        type: 'uint256',
+      },
+    ],
+    name: 'InvalidParentPublicationId',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'InvalidShortString',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'NotAFollower',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'NotAOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableInvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableUnauthorizedAccount',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'SignerNotMessageSender',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'SignerNotOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'str',
+        type: 'string',
+      },
+    ],
+    name: 'StringTooLong',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [],
+    name: 'EIP712DomainChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'publicationId',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'enum PublicationType',
+            name: 'publicationType',
+            type: 'uint8',
+          },
+          {
+            internalType: 'euint256',
+            name: 'content',
+            type: 'uint256',
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'tokenId',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint256',
+                name: 'publicationId',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct PublicationReference',
+            name: 'parentPublicationId',
+            type: 'tuple',
+          },
+          {
+            internalType: 'uint256[]',
+            name: 'childTokenIds',
+            type: 'uint256[]',
+          },
+          {
+            internalType: 'uint256[]',
+            name: 'childPublicationIds',
+            type: 'uint256[]',
+          },
+        ],
+        indexed: false,
+        internalType: 'struct Publication',
+        name: 'publication',
+        type: 'tuple',
+      },
+    ],
+    name: 'PublicationCreated',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: '_nextPublicationIds',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'nextPublicationId',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'publicationId',
+        type: 'uint256',
+      },
+    ],
+    name: '_publications',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        internalType: 'enum PublicationType',
+        name: 'publicationType',
+        type: 'uint8',
+      },
+      {
+        internalType: 'euint256',
+        name: 'content',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'publicationId',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct PublicationReference',
+        name: 'parentPublicationId',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'enum PublicationType',
+        name: 'publicationType',
+        type: 'uint8',
+      },
+      {
+        components: [
+          {
+            internalType: 'bytes',
+            name: 'data',
+            type: 'bytes',
+          },
+        ],
+        internalType: 'struct inEuint256',
+        name: 'content',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'publicationId',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct PublicationReference',
+        name: 'parentPublicationId',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'tokenId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'publicationId',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct PublicationReference[]',
+        name: 'childPublicationReferences',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'createPublication',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'eip712Domain',
+    outputs: [
+      {
+        internalType: 'bytes1',
+        name: 'fields',
+        type: 'bytes1',
+      },
+      {
+        internalType: 'string',
+        name: 'name',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'version',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: 'chainId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'verifyingContract',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'salt',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'extensions',
+        type: 'uint256[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'publicationId',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'bytes32',
+            name: 'publicKey',
+            type: 'bytes32',
+          },
+          {
+            internalType: 'bytes',
+            name: 'signature',
+            type: 'bytes',
+          },
+        ],
+        internalType: 'struct Permission',
+        name: 'auth',
+        type: 'tuple',
+      },
+    ],
+    name: 'getPublicationData',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'profileNFT',
+        type: 'address',
+      },
+    ],
+    name: 'setProfileNFT',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+] as const;
+
+export const FOLLOW_MODULE_ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'initialOwner',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'profileNFT',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [],
+    name: 'AlreadyFollows',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'InvalidShortString',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'NotAFollower',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableInvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableUnauthorizedAccount',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'SignerNotMessageSender',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'SignerNotOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'str',
+        type: 'string',
+      },
+    ],
+    name: 'StringTooLong',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [],
+    name: 'EIP712DomainChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'Followed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'Unfollowed',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: '_follows',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: 'follows',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: '_totalFollowers',
+    outputs: [
+      {
+        internalType: 'euint128',
+        name: 'followers',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'doesAlreadyFollow',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'doesAlreadyFollow',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'eip712Domain',
+    outputs: [
+      {
+        internalType: 'bytes1',
+        name: 'fields',
+        type: 'bytes1',
+      },
+      {
+        internalType: 'string',
+        name: 'name',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'version',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: 'chainId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'verifyingContract',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'salt',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'extensions',
+        type: 'uint256[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'follow',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'bytes32',
+            name: 'publicKey',
+            type: 'bytes32',
+          },
+          {
+            internalType: 'bytes',
+            name: 'signature',
+            type: 'bytes',
+          },
+        ],
+        internalType: 'struct Permission',
+        name: 'auth',
+        type: 'tuple',
+      },
+    ],
+    name: 'getFollowers',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'profileNFT',
+        type: 'address',
+      },
+    ],
+    name: 'setProfileNFT',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'unfollow',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+] as const;

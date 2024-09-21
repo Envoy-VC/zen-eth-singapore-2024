@@ -13,9 +13,8 @@ export const uploadJSON = async (json: object) => {
 };
 
 export const getJSON = async (cid: string) => {
-  const data = await fetch(`https://ipfs.io/ipfs/${cid}`).then(
-    (res) => res.json() as unknown
-  );
+  const data = await fetch(`http://localhost:8080/ipfs
+/${cid}`).then((res) => res.json() as unknown);
 
   return data;
 };

@@ -14,7 +14,7 @@ contract HandleModule is IHandleModule, ModuleBase {
     function setHandle(address owner, uint256 tokenId, Handle calldata handle) external {
         checkHandleExists(handle.namespace, handle.localName);
         if (_profile.ownerOf(tokenId) != owner) revert NotAOwner(tokenId);
-        _handleOwners[handle.namespace][handle.localName] = HandleOwner({owner: msg.sender, tokenId: tokenId});
+        _handleOwners[handle.namespace][handle.localName] = HandleOwner({owner: owner, tokenId: tokenId});
         _handles[tokenId] = handle;
         emit HandleSet(tokenId, handle);
     }

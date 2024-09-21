@@ -76,7 +76,7 @@ contract ProfileNFT is Permissioned, ERC721, IProfileNFT {
             return FHE.sealoutput(_privateData[tokenId], auth.publicKey);
         }
 
-        if (!doesAlreadyFollow(tokenId)) {
+        if (!doesAlreadyFollow(tokenId, sender)) {
             revert NotAFollower();
         }
         return FHE.sealoutput(_privateData[tokenId], auth.publicKey);

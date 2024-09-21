@@ -6,8 +6,9 @@ import { ZeroAddress } from 'ethers';
 
 import * as dotenv from 'dotenv';
 import { readFileSync, writeFileSync } from 'node:fs';
-
+// @ts-expect-error safe to ignore missing types
 import yaml from 'json-to-pretty-yaml';
+
 const path = '../../apps/www/.env';
 const path2 = '../../packages/indexer/.env';
 dotenv.config({ path });
@@ -21,6 +22,7 @@ const func: DeployFunction = async function () {
 
   await hre.fhenixjs.getFunds('0x2b7a8f9c4c38352304dd47082910546d867c3a3e');
   await hre.fhenixjs.getFunds('0xe269688F24e1C7487f649fC3dCD99A4Bf15bDaA1');
+  await hre.fhenixjs.getFunds('0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1');
 
   if (!owner || !otherAccount) {
     throw new Error('No owner available');
@@ -215,6 +217,7 @@ const func: DeployFunction = async function () {
     ],
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- safe to ignore no types
   const yamlString = yaml.stringify(jsonData) as string;
   writeFileSync('../../packages/indexer/rindexer.yaml', yamlString, {
     encoding: 'utf8',

@@ -40,8 +40,12 @@ contract FollowModule is ModuleBase, IFollowModule, Permissioned {
         return _follows[tokenId][user];
     }
 
-    function getFollowers(uint256 tokenId, Permission memory auth) external view returns (string memory) {
-        if (!doesAlreadyFollow(tokenId)) {
+    function getFollowers(uint256 tokenId, Permission memory auth, address owner)
+        external
+        view
+        returns (string memory)
+    {
+        if (!doesAlreadyFollow(tokenId, owner)) {
             revert NotAFollower();
         }
         return FHE.sealoutput(_totalFollowers[tokenId], auth.publicKey);

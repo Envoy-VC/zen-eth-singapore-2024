@@ -1569,6 +1569,11 @@ export const FOLLOW_MODULE_ABI = [
         name: 'auth',
         type: 'tuple',
       },
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
     ],
     name: 'getFollowers',
     outputs: [
